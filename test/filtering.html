@@ -1,0 +1,58 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+
+    <script src="../../webcomponentsjs/webcomponents.js"></script>
+    <script src="../../web-component-tester/browser.js"></script>
+
+    <link rel="import" href="../juicy-composition.html">
+</head>
+
+<body>
+    <template id="composition">
+        <h1>My shadow composition</h1>
+        with shadowElement
+        <content select='[slot="0"]'></content>
+    </template>
+    <test-fixture id="element">
+        <template>
+            <juicy-composition>
+                <template id="template"></template>
+                <script id="script"></script>
+                <link id="link">
+                Text
+                <style id="style"></style>
+                <!-- comment -->
+            </juicy-composition>
+        </template>
+    </test-fixture>
+</body>
+<script>
+    var juicyElement, compositionTemplate;
+    describe('juicy-composition', function () {
+
+        beforeEach(function () {
+            juicyElement = fixture('element');
+            compositionTemplate = document.querySelector('#composition');
+            juicyElement.composition = document.importNode(compositionTemplate.content, true);
+            juicyElement.stamp();
+        });
+        xit('should filter (distribute into default slot): templates, text nodes, scripts, links, styles, comments', function (){
+                var rootDistribution = juicyElement.shadowRoot.querySelector(':host>content:not([select])') ||
+                                        juicyElement.shadowRoot.querySelector('content:not([select])');// for shimmed browsers
+
+                expect(juicyElement.shadowRoot.querySelectorAll('[select]').length).to.be.equal(1);
+                expect(juicyElement.shadowRoot.querySelector('[select]').getDistributedNodes().length).to.be.equal(0);
+                debugger
+                expect(rootDistribution.getDistributedNodes().length).to.be.equal(11);
+                // expect(rootDistribution.getDistributedNodes()).to.be.eql(juicyElement.childNodes);
+                // for shimmed browsers:
+                expect([].slice.call(rootDistribution.getDistributedNodes())).to.be.eql([].slice.call(juicyElement.childNodes));
+        });
+    });
+</script>
+
+</html>

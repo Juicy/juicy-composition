@@ -1,0 +1,79 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+
+    <script src="../../../webcomponentsjs/webcomponents.js"></script>
+    <script src="../../../web-component-tester/browser.js"></script>
+
+    <link rel="import" href="../../juicy-composition.html">
+</head>
+
+<body>
+    <template id="composition">
+        <h1>My shadow composition</h1>
+        with default slot <code>&lt;content&gt;</code>
+        <content></content>
+    </template>
+    <test-fixture id="no-auto-stamp">
+        <template>
+            <juicy-composition>
+                <div>0</div>
+            </juicy-composition>
+        </template>
+    </test-fixture>
+    <test-fixture id="with-auto-stamp">
+        <template>
+            <juicy-composition auto-stamp>
+                <div>0</div>
+            </juicy-composition>
+        </template>
+    </test-fixture>
+</body>
+<script>
+
+    var juicyElement, compositionTemplate;
+    describe('juicy-composition', function () {
+        var stamp;
+
+        before(function () {
+            var el = document.createElement('juicy-composition');
+            stamp = sinon.spy(el.constructor.prototype, 'stamp');
+        });
+        afterEach(function () {
+            stamp.reset();
+        });
+        describe('with no auto-stamp given', function () {
+            beforeEach(function () {
+                juicyElement = fixture('no-auto-stamp');
+                compositionTemplate = document.querySelector('#composition');
+            });
+            it('once element is created, should NOT call stamp method', function () {
+                expect(stamp).not.to.have.been.called;
+            });
+            it('once `.composition` property is set, should NOT call stamp method', function () {
+                juicyElement.composition = document.importNode(compositionTemplate.content, true);
+                expect(stamp).not.to.have.been.called;
+            });
+        });
+        describe('with `auto-stamp` attribute given', function () {
+            beforeEach(function () {
+                juicyElement = fixture('with-auto-stamp');
+                compositionTemplate = document.querySelector('#composition');
+            });
+            it('once element is created, should call stamp method', function () {
+                expect(stamp).to.have.been.calledOnce;
+            });
+            it('once `.composition` property is set, should call stamp method', function () {
+                stamp.reset();
+                juicyElement.composition = document.importNode(compositionTemplate.content, true);
+                
+                expect(stamp).to.have.been.calledOnce;
+            });
+        });
+    });
+</script>
+
+</html>
