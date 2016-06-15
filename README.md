@@ -1,4 +1,4 @@
-# &lt;juicy-composition&gt;
+# &lt;juicy-composition&gt; [![Build Status](https://travis-ci.org/Juicy/juicy-composition.svg?branch=gh-pages)](https://travis-ci.org/Juicy/juicy-composition)
 
 > Custom Element that adds given Document Fragment to Shadow DOM
 
