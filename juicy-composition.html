@@ -164,8 +164,8 @@
      * Decorates given child nodes.
      * - Build slot ids
      * 	- Use DOM order as base
-     * 	- Apply juicy-tile-group prefix if given (to distinguish elements given within same elemen but by different vendors)
-     * - Create slot decorator/wrapper per each distributed element - to workaround lack of SD.V1 <slot> element, and give more encapsulated element for `juicy-tile-*`
+     * 	- Apply juicy-composition-scope prefix if given (to distinguish elements given within same elemen but by different vendors)
+     * - Create slot decorator/wrapper per each distributed element - to workaround lack of SD.V1 <slot> element, and give more encapsulated element for tiles
      * - Update elementsMap list to shim SD.V1 .assignedSlot method
      *
      * @param  {DocumentFragment} composition composition to which we are supposed to add missing slots
@@ -183,7 +183,7 @@
         for (var nodeNo = 0, len = nodesList.length; nodeNo < len; nodeNo++) {
             child = nodesList[nodeNo];
             // id scoping magic
-            if (child.tagName === "JUICY-TILE-GROUP") {
+            if (child.tagName === "JUICY-COMPOSITION-SCOPE" || child.tagName === "JUICY-TILE-GROUP") {
                 scopePrefix = child.getAttribute("name") || "";
                 scopePrefix += "/";
                 child._juicyScopePrefix = scopePrefix;

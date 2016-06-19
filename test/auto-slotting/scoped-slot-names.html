@@ -22,15 +22,15 @@
                 <div>0</div>
                 <div slot="given-name-0">1: given-name-0</div>
                 <div>2</div>
-                <juicy-tile-group name="scope1"></juicy-tile-group>
+                <juicy-composition-scope name="scope1"></juicy-composition-scope>
                 <div>4: scope1/0</div>
                 <div slot="given-name-1">5: given-name-1</div>
                 <div>6: scope1/2</div>
-                <juicy-tile-group name="scope2"></juicy-tile-group>
+                <juicy-composition-scope name="scope2"></juicy-composition-scope>
                 <div>8: scope2/0</div>
                 <div slot="given-name-2">9: given-name-2</div>
                 <div>10: scope2/2</div>
-                <juicy-tile-group></juicy-tile-group>
+                <juicy-composition-scope></juicy-composition-scope>
                 <div>12: 9</div>
                 <div slot="given-name-3">13: given-name-3</div>
                 <div>14: 11</div>
@@ -47,14 +47,14 @@
 
     var juicyElement, compositionTemplate;
     describe('juicy-composition', function () {
-        describe('when created with child nodes w/o slot attribute specified, and divided by `juicy-tile-group` elements, after gets stamped with some composition given', function () {
+        describe('when created with child nodes w/o slot attribute specified, and divided by `juicy-composition-scope` elements, after gets stamped with some composition given', function () {
             beforeEach(function () {
                 var compositionTemplate = document.querySelector('#composition');
                 juicyElement = fixture('slot-names');
                 juicyElement.composition = document.importNode(compositionTemplate.content, true);
                 juicyElement.stamp();
             });
-            it('should add slot attribute automatically using numbers (children index), to nodes not preceded by any `juicy-tile-group`', function () {
+            it('should add slot attribute automatically using numbers (children index), to nodes not preceded by any `juicy-composition-scope`', function () {
                 expect(juicyElement.children[0]).to.have.HTMLAttribute('slot').equal('0');
                 expect(juicyElement.children[2]).to.have.HTMLAttribute('slot').equal('2');
             });
@@ -64,7 +64,7 @@
                 expect(juicyElement.children[9]).to.have.HTMLAttribute('slot').equal('given-name-2');
                 expect(juicyElement.children[13]).to.have.HTMLAttribute('slot').equal('given-name-3');
             });
-            it('should add slot attribute automatically using prefixed numbers ({preceding juicy-tile-group name}/{children index shifted from preceding juicy-tile-group}), to nodes preceded by a `juicy-tile-group`', function () {
+            it('should add slot attribute automatically using prefixed numbers ({preceding juicy-composition-scope name}/{children index shifted from preceding juicy-composition-scope}), to nodes preceded by a `juicy-composition-scope`', function () {
                 expect(juicyElement.children[4]).to.have.HTMLAttribute('slot').equal('scope1/0');
                 expect(juicyElement.children[6]).to.have.HTMLAttribute('slot').equal('scope1/2');
 
@@ -75,14 +75,14 @@
                 expect(juicyElement.children[14]).to.have.HTMLAttribute('slot').equal('/2');
             });
         });
-        describe('when some nodes w/o slot attribute gets appended to a scope defined by a juicy-tile-group', function () {
+        describe('when some nodes w/o slot attribute gets appended to a scope defined by a juicy-composition-scope', function () {
             beforeEach(function (done) {
                 var newNodes = document.querySelector('#added-in-runtime');
                 juicyElement.insertBefore(document.importNode(newNodes.content, true), juicyElement.children[11]);
                 // wait for mutation observers
                 setTimeout(done);
             });
-            it('should add slot attribute automatically using prefixed numbers ({preceding juicy-tile-group name}/{children index shifted from preceding juicy-tile-group}), to nodes w/o slot attribute', function () {
+            it('should add slot attribute automatically using prefixed numbers ({preceding juicy-composition-scope name}/{children index shifted from preceding juicy-composition-scope}), to nodes w/o slot attribute', function () {
                 expect(juicyElement.children[11]).to.have.HTMLAttribute('slot').equal('scope2/3');
                 expect(juicyElement.children[13]).to.have.HTMLAttribute('slot').equal('scope2/5');
             });
