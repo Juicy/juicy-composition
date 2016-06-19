@@ -15,15 +15,15 @@
     <template id="composition">
         <h1>My shadow composition</h1>
         with shadowElement
-        <content select='[slot="my-slot1"]'></content>
+        <content select='[slot="my-slot1"]' juicy-style=""></content>
         <!-- <slot name="my-slot1"></slot> -->
-        <content select='[slot="my-slot2"]'></content>
+        <content select='[slot="my-slot2"]' juicy-style=""></content>
     </template>
     <test-fixture id="element">
         <template>
             <juicy-composition>
-                <div id="childNode1" slot="my-slot1">childNode1</div>
-                <div id="childNode2" slot="my-slot2">childNode2</div>
+                <div id="childNode1" slot="my-slot1" juicy-style="">childNode1</div>
+                <div id="childNode2" slot="my-slot2" juicy-style="">childNode2</div>
             </juicy-composition>
         </template>
     </test-fixture>
@@ -43,7 +43,7 @@
             it('should create shadowRoot with given Document Fragment', function () {
                 expect(juicyElement).to.have.property('shadowRoot');
                 // expect(juicyElement.shadowRoot).to.have.property('innerHTML', compositionTemplate.innerHTML);
-                expect(juicyElement.shadowRoot.innerHTML).to.contain(compositionTemplate.innerHTML);
+                expect(juicyElement.shadowRoot.innerHTML).to.equal(compositionTemplate.innerHTML);
             });
             it('should distribute its children, which has `slot` attribute matching slot(content) tag within given shadow DOM', function () {
                 expect(juicyElement.children[1].getDestinationInsertionPoints().length).to.be.greaterThan(0);

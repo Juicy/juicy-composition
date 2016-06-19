@@ -1,0 +1,110 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+
+    <script src="../../../webcomponentsjs/webcomponents.js"></script>
+    <script src="../../../web-component-tester/browser.js"></script>
+    <script src="../helpers/assertions.js"></script>
+
+    <link rel="import" href="../../juicy-composition.html">
+</head>
+
+<body>
+    <template id="composition">
+        <h1>My shadow composition</h1>
+    </template>
+    <test-fixture id="slot-names">
+        <template>
+            <juicy-composition>
+                <div>0</div>
+                <div slot="given-name-0">1: given-name-0</div>
+                <div>2</div>
+                <juicy-tile-group name="scope1"></juicy-tile-group>
+                <div>4: scope1/0</div>
+                <div slot="given-name-1">5: given-name-1</div>
+                <div>6: scope1/2</div>
+                <juicy-tile-group name="scope2"></juicy-tile-group>
+                <div>8: scope2/0</div>
+                <div slot="given-name-2">9: given-name-2</div>
+                <div>10: scope2/2</div>
+                <juicy-tile-group></juicy-tile-group>
+                <div>12: 9</div>
+                <div slot="given-name-3">13: given-name-3</div>
+                <div>14: 11</div>
+            </juicy-composition>
+        </template>
+    </test-fixture>
+    <template id="added-in-runtime">
+        <div>11: scope2/3</div>
+        <div slot="given-name-4">12: given-name-1</div>
+        <div>13: scope2/5</div>
+    </template>
+</body>
+<script>
+
+    var juicyElement, compositionTemplate;
+    describe('juicy-composition', function () {
+        describe('when created with child nodes w/o slot attribute specified, and divided by `juicy-tile-group` elements, after gets stamped with some composition given', function () {
+            beforeEach(function () {
+                var compositionTemplate = document.querySelector('#composition');
+                juicyElement = fixture('slot-names');
+                juicyElement.composition = document.importNode(compositionTemplate.content, true);
+                juicyElement.stamp();
+            });
+            it('should add slot attribute automatically using numbers (children index), to nodes not preceded by any `juicy-tile-group`', function () {
+                expect(juicyElement.children[0]).to.have.HTMLAttribute('slot').equal('0');
+                expect(juicyElement.children[2]).to.have.HTMLAttribute('slot').equal('2');
+            });
+            it('should not change already given slot names', function () {
+                expect(juicyElement.children[1]).to.have.HTMLAttribute('slot').equal('given-name-0');
+                expect(juicyElement.children[5]).to.have.HTMLAttribute('slot').equal('given-name-1');
+                expect(juicyElement.children[9]).to.have.HTMLAttribute('slot').equal('given-name-2');
+                expect(juicyElement.children[13]).to.have.HTMLAttribute('slot').equal('given-name-3');
+            });
+            it('should add slot attribute automatically using prefixed numbers ({preceding juicy-tile-group name}/{children index shifted from preceding juicy-tile-group}), to nodes preceded by a `juicy-tile-group`', function () {
+                expect(juicyElement.children[4]).to.have.HTMLAttribute('slot').equal('scope1/0');
+                expect(juicyElement.children[6]).to.have.HTMLAttribute('slot').equal('scope1/2');
+
+                expect(juicyElement.children[8]).to.have.HTMLAttribute('slot').equal('scope2/0');
+                expect(juicyElement.children[10]).to.have.HTMLAttribute('slot').equal('scope2/2');
+
+                expect(juicyElement.children[12]).to.have.HTMLAttribute('slot').equal('/0');
+                expect(juicyElement.children[14]).to.have.HTMLAttribute('slot').equal('/2');
+            });
+        });
+        describe('when some nodes w/o slot attribute gets appended to a scope defined by a juicy-tile-group', function () {
+            beforeEach(function (done) {
+                var newNodes = document.querySelector('#added-in-runtime');
+                juicyElement.insertBefore(document.importNode(newNodes.content, true), juicyElement.children[11]);
+                // wait for mutation observers
+                setTimeout(done);
+            });
+            it('should add slot attribute automatically using prefixed numbers ({preceding juicy-tile-group name}/{children index shifted from preceding juicy-tile-group}), to nodes w/o slot attribute', function () {
+                expect(juicyElement.children[11]).to.have.HTMLAttribute('slot').equal('scope2/3');
+                expect(juicyElement.children[13]).to.have.HTMLAttribute('slot').equal('scope2/5');
+            });
+            it('should not change already given slot names', function () {
+                expect(juicyElement.children[12]).to.have.HTMLAttribute('slot').equal('given-name-4');
+            });
+        });
+        xdescribe('when some nodes w/o slot attribute gets added in the middle of a scope', function () {
+            beforeEach(function (done) {
+                var newNodes = document.querySelector('#added-in-runtime');
+                juicyElement.insertBefore(document.importNode(newNodes.content, true), juicyElement.children[5]);
+                // wait for mutation observers
+                setTimeout(done);
+            });
+            xit('should add slot attribute automatically using numbers (children index) (?)', function () {
+            });
+            xit('should not change already given slot names (?)', function () {
+            });
+            xit('should update automatically created slot names (?)', function () {
+            });
+        });
+    });
+</script>
+
+</html>
