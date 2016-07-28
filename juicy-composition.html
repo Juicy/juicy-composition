@@ -45,6 +45,7 @@
                 if(this.autoStamp && newVal !== composition){
                     composition = newVal;
                     this.stamp();
+                    composition = this.shadowRoot;
                 }
                 composition = newVal;
             }
