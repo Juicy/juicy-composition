@@ -58,6 +58,22 @@
                 expect(stamp).not.to.have.been.called;
             });
         });
+        describe('with `auto-stamp` given in run-time (as <code>""</code>)', function () {
+            beforeEach(function () {
+                juicyElement = fixture('no-auto-stamp');
+                compositionTemplate = document.querySelector('#composition');
+                juicyElement.setAttribute('auto-stamp', '');
+            });
+            it('once attribute is changed, should call stamp method', function () {
+                expect(stamp).to.have.been.calledOnce;
+            });
+            it('once `.composition` property is set, should call stamp method', function () {
+                stamp.reset();
+                juicyElement.composition = document.importNode(compositionTemplate.content, true);
+
+                expect(stamp).to.have.been.calledOnce;
+            });
+        });
         describe('with `auto-stamp` attribute given', function () {
             beforeEach(function () {
                 juicyElement = fixture('with-auto-stamp');
@@ -69,7 +85,7 @@
             it('once `.composition` property is set, should call stamp method', function () {
                 stamp.reset();
                 juicyElement.composition = document.importNode(compositionTemplate.content, true);
-                
+
                 expect(stamp).to.have.been.calledOnce;
             });
         });

@@ -152,7 +152,8 @@
     JuicyCompositionPrototype.attributeChangedCallback = function(attr, oldVal, newVal) {
         switch(attr){
             case "auto-stamp":
-                this.autoStamp = !!newVal;
+                this.autoStamp = newVal !== null && newVal !== undefined;
+                this.autoStamp && oldVal != newVal && this.stamp();
                 break;
             case 'composition':
                 this.composition = newVal || null;
@@ -216,7 +217,7 @@
 
             // forward per-element attributes here
 
-            
+
             // </V1 slot shim>
             // attach a selectable key to each light-dom node
             child.hasAttribute('slot') || child.setAttribute('slot', id);
