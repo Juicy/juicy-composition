@@ -46,8 +46,9 @@
                     composition = newVal;
                     this.stamp();
                     composition = this.shadowRoot;
+                } else {
+                    composition = newVal;
                 }
-                composition = newVal;
             }
         });
         this.elementsMap = {};
