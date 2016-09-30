@@ -22,15 +22,15 @@
                 <div>0</div>
                 <div slot="given-name-0">1: given-name-0</div>
                 <div>2</div>
-                <juicy-composition-scope name="scope1"></juicy-composition-scope>
+                <meta itemprop="juicy-composition-scope" content="scope1"></meta>
                 <div>4: scope1/0</div>
                 <div slot="given-name-1">5: given-name-1</div>
                 <div>6: scope1/2</div>
-                <juicy-composition-scope name="scope2"></juicy-composition-scope>
+                <meta itemprop="juicy-composition-scope" content="scope2"></meta>
                 <div>8: scope2/0</div>
                 <div slot="given-name-2">9: given-name-2</div>
                 <div>10: scope2/2</div>
-                <juicy-composition-scope></juicy-composition-scope>
+                <meta itemprop="juicy-composition-scope" ></meta>
                 <div>12: 9</div>
                 <div slot="given-name-3">13: given-name-3</div>
                 <div>14: 11</div>
@@ -64,7 +64,7 @@
                 expect(juicyElement.children[9]).to.have.HTMLAttribute('slot').equal('given-name-2');
                 expect(juicyElement.children[13]).to.have.HTMLAttribute('slot').equal('given-name-3');
             });
-            it('should add slot attribute automatically using prefixed numbers ({preceding juicy-composition-scope name}/{children index shifted from preceding juicy-composition-scope}), to nodes preceded by a `juicy-composition-scope`', function () {
+            it('should add slot attribute automatically using prefixed numbers ({preceding juicy-composition-scope content}/{children index shifted from preceding juicy-composition-scope}), to nodes preceded by a `juicy-composition-scope`', function () {
                 expect(juicyElement.children[4]).to.have.HTMLAttribute('slot').equal('scope1/0');
                 expect(juicyElement.children[6]).to.have.HTMLAttribute('slot').equal('scope1/2');
 
