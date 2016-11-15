@@ -31,7 +31,7 @@
      * Creates a juicy-composer, runs #stamp method, and attaches mutation observer.
      */
     JuicyCompositionPrototype.createdCallback = function() {
-        var that = this,
+        var element = this,
             composition;
         this.attributeChangedCallback('composition', this.composition, this.getAttribute('composition'));
         composition = this.composition;
@@ -55,14 +55,18 @@
 
         this.autoStamp && this.stamp();
 
-
+        var updateElement = function(mutation){
+            return update(mutation, element);
+        };
         this.observer = new MutationObserver(function (mutations) {
             // do nothing if it's not yet attached
-            if(!that.isStamped){
+            if(!element.isStamped){
               return;
             }
+            element.observer.disconnect();
             // update / distribute slots on each mutation
-            mutations.forEach(that.update);
+            mutations.forEach(updateElement);
+            element.observer.observe(element, { childList: true });
 
         });
         // IDEA: make it cofigurable?
@@ -110,12 +114,8 @@
      * Applies composition, and distribution to added nodes, cleans and undistributes removed nodes.
      * @param  {MutationRecord} mutation mutation of an element
      */
-    JuicyCompositionPrototype.update = function(mutation){
+    function update(mutation, element){
         if (mutation.addedNodes.length) {
-            var element = mutation.target || this;
-            // TODO: make it cleaner
-            element.observer.disconnect();
-
 
             if(mutation.addedNodes.length){
                 var previousElementSibling = mutation.previousSibling && !(mutation.previousSibling instanceof HTMLElement) ?
@@ -137,8 +137,6 @@
                 }
             }
 
-            // TODO: make it cleaner
-            element.observer.observe(element, { childList: true });
         }
     }
 
