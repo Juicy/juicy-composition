@@ -10,11 +10,11 @@
      * @type {Object}
      */
     JuicyCompositionPrototype.elementsMap = null;
-    /**
-     * Document Fragment withdecorators for elements that were not specified in composition
-     * @type {DocumentFragment}
+    /*---*
+     * Map with decorators for elements that were not specified in composition
+     * @type {Object}
      */
-    JuicyCompositionPrototype.remainingDecorators = null;
+    // JuicyCompositionPrototype.remainingDecorators = null;
     // </V1 assignedSlot shim>
 
     /**
@@ -52,7 +52,6 @@
             }
         });
         this.elementsMap = {};
-        this.remainingDecorators = document.createDocumentFragment();
 
         this.autoStamp && this.stamp();
 
@@ -86,11 +85,12 @@
 
             // <V1 slot shim>
             // adding it to a this.shadowContainer manually
-            decorateFilteredElements(this.composition, this.elementsMap, filterElements(this.children), this.remainingDecorators, '');
+            let remainingDecorators = decorateFilteredElements(this.composition, this.elementsMap, filterElements(this.children), '');
             // </V1 slot shim>
             // add remaining decorators
-            givenComposition.appendChild(this.remainingDecorators);
-
+            if(remainingDecorators){
+                givenComposition.appendChild(remainingDecorators);
+            }
             shadowRoot.appendChild(givenComposition);
             this.isStamped = true;
         }
@@ -129,10 +129,12 @@
 
                 // <V1 slot shim>
                 // adding it to a this.shadowContainer manually
-                decorateFilteredElements(element.shadowRoot, element.elementsMap, nodesToDistribute, element.remainingDecorators, '', scopePrefix, scopedIndex);
+                let remainingDecorators = decorateFilteredElements(element.shadowRoot, element.elementsMap, nodesToDistribute, '', scopePrefix, scopedIndex);
                 // </V1 slot shim>
                 // add remaining decorators
-                element.shadowRoot.appendChild(element.remainingDecorators);
+                if(remainingDecorators){
+                    element.shadowRoot.appendChild(remainingDecorators);
+                }
             }
 
             // TODO: make it cleaner
@@ -174,13 +176,17 @@
      * @param  {DocumentFragment} composition composition to which we are supposed to add missing slots
      * @param  {Object} elementsMap map of decorated elements, will be modified
      * @param  {NodeList|Array} nodesList   list of nodes to be decorated
-     * @param  {DocumentFragment} fragment    where slots should be aadded, will be modified
      * @param  {String} prefix    prefix for all ids
-     * --@return {Object<HTMLElement>}   map of unattached decoretors
+     * @return {DocumentFragment|null}   DocumentFragment with unattached decorators/slots or null if none
      */
-    function decorateFilteredElements(composition, elementsMap, nodesList, fragment, prefix, scopePrefix, scopedIndex){
+    function decorateFilteredElements(composition, elementsMap, nodesList, prefix, scopePrefix, scopedIndex){
         var tiles = [], tile, child,
             id;
+        var remainingDecorators = document.createDocumentFragment();
+        // --
+        // workaround for https://github.com/webcomponents/webcomponentsjs/issues/648
+        // remainingDecorators.appendChild(document.createTextNode(""));
+        // ---
         scopePrefix = scopePrefix || '';
         scopedIndex = scopedIndex || 0;
         for (var nodeNo = 0, len = nodesList.length; nodeNo < len; nodeNo++) {
@@ -208,7 +214,7 @@
             tile = composition.querySelector('content[select="[slot=\'' + id + '\']"], content[select="[slot=\\"' + id + '\\"]"]');
             if (!tile) {
                 tile = createSlot(id);
-                fragment.appendChild(tile);
+                remainingDecorators.appendChild(tile);
             }
             // <V1 assignedSlot shim>
             // https://www.w3.org/TR/shadow-dom/#extensions-to-nondocumenttypechildnode-interface
@@ -225,7 +231,9 @@
             child.hasAttribute('slot') || child.setAttribute('slot', id);
         }
         // <V1 slot shim>
-        // return fragment;
+        // workaround for https://github.com/webcomponents/webcomponentsjs/issues/648
+        // return nothing if document fragment is empty
+        return remainingDecorators.firstChild && remainingDecorators || null;
         // </V1 slot shim>
 
     }
