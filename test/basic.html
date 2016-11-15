@@ -37,9 +37,10 @@
             compositionTemplate = document.querySelector('#composition');
             juicyElement.composition = document.importNode(compositionTemplate.content, true);
             setTimeout(function waitForPolyfilledUpgrade(){
+                juicyElement = document.querySelector('juicy-composition');
                 juicyElement.stamp();
                 done();
-            },10);
+            },100);
         });
 
         describe('when `.composition` property is set, once `.stamp` method is called', function () {
