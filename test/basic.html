@@ -32,11 +32,14 @@
     var juicyElement, compositionTemplate;
     describe('juicy-composition', function () {
 
-        beforeEach(function () {
+        beforeEach(function (done) {
             juicyElement = fixture('element');
             compositionTemplate = document.querySelector('#composition');
             juicyElement.composition = document.importNode(compositionTemplate.content, true);
-            juicyElement.stamp();
+            setTimeout(function waitForPolyfilledUpgrade(){
+                juicyElement.stamp();
+                done();
+            },10);
         });
 
         describe('when `.composition` property is set, once `.stamp` method is called', function () {
