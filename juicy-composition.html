@@ -33,8 +33,8 @@
     JuicyCompositionPrototype.createdCallback = function() {
         var element = this,
             composition;
-        this.attributeChangedCallback('composition', this.composition, this.getAttribute('composition'));
-        composition = this.composition;
+        // set/getAttribute should be removed from constructor in V1
+        composition = this.getAttribute('composition') || this.composition || null;;
         this.autoStamp = this.hasAttribute('auto-stamp');
         Object.defineProperty(this, 'composition', {
             get: function(){
@@ -209,6 +209,7 @@
             // check if we need to create a missing slot
             // TODO: check the performance impac of those selectors (at least once V1 is released)
             // consider .getDestinationInsertionPoints()
+            // XXX: V0 polyfill may have some problems with querySelector, if so try to use querySelectorAll()
             tile = composition.querySelector('content[select="[slot=\'' + id + '\']"], content[select="[slot=\\"' + id + '\\"]"]');
             if (!tile) {
                 tile = createSlot(id);
