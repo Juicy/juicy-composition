@@ -32,18 +32,27 @@
     var juicyElement, compositionTemplate;
     describe('juicy-composition', function () {
 
-        beforeEach(function (done) {
-            juicyElement = fixture('element');
-            compositionTemplate = document.querySelector('#composition');
-            juicyElement.composition = document.importNode(compositionTemplate.content, true);
-            setTimeout(function waitForPolyfilledUpgrade(){
-                juicyElement = document.querySelector('juicy-composition');
-                juicyElement.stamp();
-                done();
-            },100);
+
+        describe('when created', function () {
+            beforeEach(function () {
+                juicyElement = document.createElement('juicy-composition');
+            });
+            it('should not create shadowRoot', function () {
+                expect(juicyElement).to.have.property('shadowRoot').equal(null);
+            });
         });
 
         describe('when `.composition` property is set, once `.stamp` method is called', function () {
+            beforeEach(function (done) {
+                juicyElement = fixture('element');
+                compositionTemplate = document.querySelector('#composition');
+                juicyElement.composition = document.importNode(compositionTemplate.content, true);
+                setTimeout(function waitForPolyfilledUpgrade(){
+                    juicyElement = document.querySelector('juicy-composition');
+                    juicyElement.stamp();
+                    done();
+                },100);
+            });
             it('should create shadowRoot with given Document Fragment', function () {
                 expect(juicyElement).to.have.property('shadowRoot');
                 // expect(juicyElement.shadowRoot).to.have.property('innerHTML', compositionTemplate.innerHTML);
