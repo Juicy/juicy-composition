@@ -1,4 +1,4 @@
-# &lt;juicy-composition&gt; [![Build Status](https://travis-ci.org/Juicy/juicy-composition.svg?branch=gh-pages)](https://travis-ci.org/Juicy/juicy-composition)
+# &lt;juicy-composition&gt; [![Build Status](https://travis-ci.org/Juicy/juicy-composition.svg?branch=master)](https://travis-ci.org/Juicy/juicy-composition)
 
 > Custom Element that adds given Document Fragment to Shadow DOM
 
@@ -14,7 +14,7 @@ Install the component using [Bower](http://bower.io/):
 $ bower install juicy-composition --save
 ```
 
-Or [download as ZIP](https://github.com/Juicy/juicy-composition/archive/gh-pages.zip).
+Or [download as ZIP](https://github.com/Juicy/juicy-composition/archive/master.zip).
 
 ## Usage
 
