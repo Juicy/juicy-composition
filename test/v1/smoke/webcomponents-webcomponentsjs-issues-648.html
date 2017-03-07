@@ -13,7 +13,7 @@
 </head>
 
 <body>
-    <template id="composition"><div style="background: green;"><content select="[slot='something']"></content><content select="[slot='else']"></content></div></template>
+    <template id="composition"><div style="background: green;"><slot name="something"></slot><slot name="else"></slot></div></template>
     <test-fixture id="element">
         <template>
             <juicy-composition>

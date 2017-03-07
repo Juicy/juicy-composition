@@ -16,10 +16,10 @@
 <body>
     <template id="composition">
         <h1>My shadow composition</h1>
-        <content select="[slot='given-name-0']"></content>
+        <slot name="given-name-0"></slot>
         <hr>
-        <content select='[slot="2"]'></content> <!-- use both quote types -->
-        <content select='[slot="6"]'></content> <!-- use both quote types -->
+        <slot name='2'></slot>
+        <slot name="6"></slot>
     </template>
     <test-fixture id="slot-names">
         <template>
@@ -50,23 +50,23 @@
         });
         describe('when given a composition with some slots missing, once stamped', function () {
             it('should add slots automatically', function () {
-                expect(juicyElement.children[1]).to.have.assignedContent;
+                expect(juicyElement.children[1]).to.have.assignedSlot;
                 // not a default slot
-                expect(juicyElement.children[1]).assignedContent.to.have.HTMLAttribute('select');
+                expect(juicyElement.children[1]).assignedSlot.to.have.HTMLAttribute('name');
 
-                expect(juicyElement.children[3]).to.have.assignedContent;
+                expect(juicyElement.children[3]).to.have.assignedSlot;
                 // not a default slot
-                expect(juicyElement.children[3]).assignedContent.to.have.HTMLAttribute('select');
+                expect(juicyElement.children[3]).assignedSlot.to.have.HTMLAttribute('name');
             });
             it('should not change already given slots', function () {
-                expect(juicyElement.children[0]).to.have.assignedContent.equal(juicyElement.shadowRoot.children[1]);
-                expect(juicyElement.children[2]).to.have.assignedContent.equal(juicyElement.shadowRoot.children[3]);
+                expect(juicyElement.children[0]).to.have.assignedSlot.equal(juicyElement.shadowRoot.children[1]);
+                expect(juicyElement.children[2]).to.have.assignedSlot.equal(juicyElement.shadowRoot.children[3]);
             });
             xit('should add default slot (?)', function () {
-                expect(juicyElement.shadowRoot.querySelector('content:not([select])')).to.be.not.null;
+                expect(juicyElement.shadowRoot.querySelector('slot:not([name])')).to.be.not.null;
             });
             it('should not add any additional slots', function () {
-                expect(juicyElement.shadowRoot.querySelectorAll('content').length).to.equal(3+2);
+                expect(juicyElement.shadowRoot.querySelectorAll('slot').length).to.equal(3+2);
             });
         });
 
@@ -78,20 +78,20 @@
                 setTimeout(done);
             });
             it('should add slots automatically', function () {
-                expect(juicyElement.children[5]).to.have.assignedContent;
+                expect(juicyElement.children[5]).to.have.assignedSlot;
                 // not a default slot
-                expect(juicyElement.children[5]).assignedContent.to.have.HTMLAttribute('select');
+                expect(juicyElement.children[5]).assignedSlot.to.have.HTMLAttribute('name');
 
-                expect(juicyElement.children[7]).to.have.assignedContent;
+                expect(juicyElement.children[7]).to.have.assignedSlot;
                 // not a default slot
-                expect(juicyElement.children[7]).assignedContent.to.have.HTMLAttribute('select');
+                expect(juicyElement.children[7]).assignedSlot.to.have.HTMLAttribute('name');
             });
             it('should not change already given slots', function () {
-                expect(juicyElement.children[4]).to.have.assignedContent.equal(juicyElement.shadowRoot.children[1]);
-                expect(juicyElement.children[6]).to.have.assignedContent.equal(juicyElement.shadowRoot.children[4]);
+                expect(juicyElement.children[4]).to.have.assignedSlot.equal(juicyElement.shadowRoot.children[1]);
+                expect(juicyElement.children[6]).to.have.assignedSlot.equal(juicyElement.shadowRoot.children[4]);
             });
             it('should not add any additional slots', function () {
-                expect(juicyElement.shadowRoot.querySelectorAll('content').length).to.equal(3+2+2);
+                expect(juicyElement.shadowRoot.querySelectorAll('slot').length).to.equal(3+2+2);
             });
         });
     });

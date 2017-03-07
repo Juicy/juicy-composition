@@ -1,6 +1,8 @@
 <!-- juicy-composition @version: 0.0.7 @license: MIT -->
 <script>
 (function() {
+    const useShadowDOMV1 = Boolean(Element.prototype.attachShadow && Node.prototype.getRootNode && !(window.JuicyComposition && window.JuicyComposition.shadow === 'v0'));
+
     // Creates an object based in the HTML Element prototype
     var JuicyCompositionPrototype = Object.create(HTMLElement.prototype);
 
@@ -83,8 +85,7 @@
         }
         if (givenComposition) {
             if (!shadowRoot) {
-                shadowRoot = this.createShadowRoot();
-                // shadowRoot = this.attachShadow({mode: "open"});
+                shadowRoot = useShadowDOMV1 ? this.attachShadow({mode: "open"}) : this.createShadowRoot();
             }
 
             // <V1 slot shim>
@@ -210,9 +211,11 @@
             // TODO: check the performance impac of those selectors (at least once V1 is released)
             // consider .getDestinationInsertionPoints()
             // XXX: V0 polyfill may have some problems with querySelector, if so try to use querySelectorAll()
-            tile = composition.querySelector('content[select="[slot=\'' + id + '\']"], content[select="[slot=\\"' + id + '\\"]"]');
+            tile = useShadowDOMV1 ?
+                    composition.querySelector('slot[name=\'' + id + '\'], slot[name=\"' + id + '\"]') :
+                    composition.querySelector('content[select="[slot=\'' + id + '\']"], content[select="[slot=\\"' + id + '\\"]"]');
             if (!tile) {
-                tile = createSlot(id);
+                tile = useShadowDOMV1 ? createSlot(id) : createContent(id);
                 remainingDecorators.appendChild(tile);
             }
             // <V1 assignedSlot shim>
@@ -242,10 +245,21 @@
      * @param  {String} id identifier of the element.
      * @return {HTMLElement}    decorator with <content> tag to be put into shadow tree
      */
-    function createSlot(id){
+    function createContent(id){
         var slot = document.createElement('content'); // 'slot'
         // slot.name = id;
         slot.setAttribute("select", "[slot='" + id + "']");
+        return slot;
+    }
+    /**
+     * Creates decorator & V1 <slot> shim for an element
+     * @param  {String} id identifier of the element.
+     * @return {HTMLElement}    decorator with <content> tag to be put into shadow tree
+     */
+    function createSlot(id){
+        var slot = document.createElement('slot'); // 'slot'
+        // slot.name = id;
+        slot.setAttribute("name", id);
         return slot;
     }
 

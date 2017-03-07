@@ -36,7 +36,7 @@ Or [download as ZIP](https://github.com/Juicy/juicy-composition/archive/master.z
     <template id="my-shadow">
         <h1>Here goes</h1>
         <p>Any HTML structure to be put into `juicy-composition`s shadowRoot</p>
-        <p>It may contain slots: <content select="[slot='my-slot']"></content></p>
+        <p>It may contain slots: <slot name="my-slot">with fallback content</slot></p>
     </template>
     ....
     <juicy-composition>
@@ -76,7 +76,9 @@ Event     | Description
 
 ## Slots
 
-In your composition you can/should use slots to distribute the content within your layout. Conceptually, it matches Shadow DOM V1, however, we still support V0 syntax, due to browser & polyfill coverage.
+In your composition you can/should use slots to distribute the content within your layout.
+Conceptually, it matches Shadow DOM V1, which we use if available.
+However, we still support V0 syntax as well, due to browser & polyfill coverage.
 
 `<juicy-composition>` adds also few handy features on top of that.
 
@@ -92,9 +94,10 @@ Naturally, thanks to Shadow DOM. If you can/want, you setup everything explicitl
 <template id="composition">
   My composition structure
   ...
-  <content select="[slot='my-slot-name']"></content>
-  <!-- in Shadow DOM V1 it will look like: -->
+  <!-- Shadow DOM V1 -->
   <slot name="my-slot-name"></slot>
+  <!-- or in Shadow DOM V0 -->
+  <content select="[slot='my-slot-name']"></content>
 </template>
 ```
 
@@ -138,6 +141,18 @@ Will make slot names look like this
 ### Automatic slots
 In case some content is added dynamically, out you just missed to add some slots for given content we will create slots automatically as well.
 We will append new `<slot>` (`<content>`) element(-s) to the end of the composition.
+
+
+### Force Shadow DOM v0
+If for any reason you would like to force this element to use Shadow DOM v0,
+you can do that by setting the flag **before** you import this element:
+
+```html
+<script>
+    window.JuicyComposition.shadow = 'v0';
+</script>
+<link rel="import" href="bower_components/juicy-composition/juicy-composition.html">
+```
 
 ## [Contributing and Development](CONTRIBUTING.md)
 
