@@ -248,30 +248,6 @@
         slot.setAttribute("select", "[slot='" + id + "']");
         return slot;
     }
-    /**
-     * Sets attributes given in attrsMap (key-value map) to given element
-     * @param {HTMLElement} element
-     * @param {Object} attrsMap
-     */
-    function setAttributes(element, attrsMap){
-        for (var key in attrsMap){
-            if (attrsMap.hasOwnProperty(key)) {
-                 element.setAttribute(key, attrsMap[key]);
-            }
-        }
-    }
-    /**
-     * Sets properties given in propsMap (key-value map) to given element
-     * @param {HTMLElement} element
-     * @param {Object} propsMap
-     */
-    function setProperties(element, propsMap){
-        for (var key in propsMap){
-            if (propsMap.hasOwnProperty(key)) {
-                 element[key] = propsMap[key];
-            }
-        }
-    }
 
     /**
      * Filters nodes that we would like to compose
