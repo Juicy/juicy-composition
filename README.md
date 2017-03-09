@@ -149,7 +149,7 @@ you can do that by setting the flag **before** you import this element:
 
 ```html
 <script>
-    window.JuicyComposition.shadow = 'v0';
+    window.JuicyComposition = {shadow: 'v0'};
 </script>
 <link rel="import" href="bower_components/juicy-composition/juicy-composition.html">
 ```
