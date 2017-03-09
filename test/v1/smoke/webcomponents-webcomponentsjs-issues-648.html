@@ -5,14 +5,15 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
     <title>juicy-composition basic test</title>
-    <script src="../../../webcomponentsjs/webcomponents.js"></script>
-    <script src="../../../web-component-tester/browser.js"></script>
+    <script src="../../../../webcomponentsjs/webcomponents.js"></script>
+    <script src="../../../../web-component-tester/browser.js"></script>
+    <script src="../../helpers/pre-config.js"></script>
 
-    <link rel="import" href="../../juicy-composition.html">
+    <link rel="import" href="../../../juicy-composition.html">
 </head>
 
 <body>
-    <template id="composition"><div style="background: green;"><content select="[slot='something']"></content><content select="[slot='else']"></content></div></template>
+    <template id="composition"><div style="background: green;"><slot name="something"></slot><slot name="else"></slot></div></template>
     <test-fixture id="element">
         <template>
             <juicy-composition>

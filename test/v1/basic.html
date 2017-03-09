@@ -1,0 +1,69 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+    <title>juicy-composition basic test</title>
+    <script src="../../../webcomponentsjs/webcomponents.js"></script>
+    <script src="../../../web-component-tester/browser.js"></script>
+    <script src="../helpers/pre-config.js"></script>
+
+    <link rel="import" href="../../juicy-composition.html">
+</head>
+
+<body>
+    <template id="composition">
+        <h1>My shadow composition</h1>
+        with shadowElement
+        <slot name="my-slot1"></slot>
+        <slot name="my-slot2"></slot>
+    </template>
+    <test-fixture id="element">
+        <template>
+            <juicy-composition>
+                <div id="childNode1" slot="my-slot1">childNode1</div>
+                <div id="childNode2" slot="my-slot2">childNode2</div>
+            </juicy-composition>
+        </template>
+    </test-fixture>
+</body>
+<script>
+    var juicyElement, compositionTemplate;
+    describe('juicy-composition', function () {
+
+
+        describe('when created', function () {
+            beforeEach(function () {
+                juicyElement = document.createElement('juicy-composition');
+            });
+            it('should not create shadowRoot', function () {
+                expect(juicyElement).to.have.property('shadowRoot').equal(null);
+            });
+        });
+
+        describe('when `.composition` property is set, once `.stamp` method is called', function () {
+            beforeEach(function (done) {
+                juicyElement = fixture('element');
+                compositionTemplate = document.querySelector('#composition');
+                juicyElement.composition = document.importNode(compositionTemplate.content, true);
+                setTimeout(function waitForPolyfilledUpgrade(){
+                    juicyElement = document.querySelector('juicy-composition');
+                    juicyElement.stamp();
+                    done();
+                },100);
+            });
+            it('should create shadowRoot with given Document Fragment', function () {
+                expect(juicyElement).to.have.property('shadowRoot');
+                // expect(juicyElement.shadowRoot).to.have.property('innerHTML', compositionTemplate.innerHTML);
+                expect(juicyElement.shadowRoot.innerHTML).to.equal(compositionTemplate.innerHTML);
+            });
+            it('should distribute its children, which has `slot` attribute matching slot(content) tag within given shadow DOM', function () {
+                debugger
+                expect(juicyElement.children[1].assignedSlot).to.be.not.null;
+            });
+        });
+    });
+</script>
+
+</html>

@@ -5,25 +5,26 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
     <title>juicy-composition basic test</title>
-    <script src="../../webcomponentsjs/webcomponents.js"></script>
-    <script src="../../web-component-tester/browser.js"></script>
+    <script src="../../../webcomponentsjs/webcomponents.js"></script>
+    <script src="../../../web-component-tester/browser.js"></script>
+    <script src="../helpers/pre-config.js"></script>
 
-    <link rel="import" href="../juicy-composition.html">
+    <link rel="import" href="../../juicy-composition.html">
 </head>
 
 <body>
     <template id="composition">
         <h1>My shadow composition</h1>
         with shadowElement
-        <content select='[slot="my-slot1"]' juicy-style=""></content>
+        <content select='[slot="my-slot1"]'></content>
         <!-- <slot name="my-slot1"></slot> -->
-        <content select='[slot="my-slot2"]' juicy-style=""></content>
+        <content select='[slot="my-slot2"]'></content>
     </template>
     <test-fixture id="element">
         <template>
             <juicy-composition>
-                <div id="childNode1" slot="my-slot1" juicy-style="">childNode1</div>
-                <div id="childNode2" slot="my-slot2" juicy-style="">childNode2</div>
+                <div id="childNode1" slot="my-slot1">childNode1</div>
+                <div id="childNode2" slot="my-slot2">childNode2</div>
             </juicy-composition>
         </template>
     </test-fixture>

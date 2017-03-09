@@ -14,17 +14,36 @@
 </head>
 <body>
     <script>
+    (function(){
         // Load and run all tests (.html, .js):
-        WCT.loadSuites([
-          'basic.html',
-          'filtering.html', // filter non-tiles
-        //   'scoping.html', // build elements ids according to juicy-composition-scope element
+        var suites = [
           'auto-stamp/stamps.html', // runs stamp after element is created or setup changed
           'auto-slotting/slot-names.html', // add numeric slotnames
-          'auto-slotting/scoped-slot-names.html', // add scoped numeric slotnames
-          'auto-slotting/slots.html', // add missing slots
-          'smoke/webcomponents-webcomponentsjs-issues-648.html' // add missing slots
-        ]);
+          'filtering.html' // filter non-tiles
+        ];
+        var v0suites = [
+          'v0/basic.html',
+        //   'v0/scoping.html', // build elements ids according to juicy-composition-scope element
+          'v0/auto-slotting/scoped-slot-names.html', // add scoped numeric slotnames
+          'v0/auto-slotting/slots.html', // add missing slots
+          'v0/translate/v1-to-v0.html', // translate between v0 and v1
+          'v0/smoke/webcomponents-webcomponentsjs-issues-648.html' // add missing slots
+        ];
+        var v1suites = [
+          'v1/basic.html',
+        //   'v1/scoping.html', // build elements ids according to juicy-composition-scope element
+          'v1/auto-slotting/scoped-slot-names.html', // add scoped numeric slotnames
+          'v1/auto-slotting/slots.html', // add missing slots
+          'v1/translate/v0-to-v1.html', // translate between v0 and v1
+          'v1/smoke/webcomponents-webcomponentsjs-issues-648.html' // add missing slots
+        ];
+        // in v1 environment test also forced v0
+        if(Element.prototype.attachShadow && Node.prototype.getRootNode){
+            v0suites = v0suites.map(function(url){ return url+'?juicy-composition-shadow=v0'});
+            suites = suites.concat(v1suites);
+        }
+        WCT.loadSuites(suites.concat(v0suites));
+    })();
     </script>
 </body>
 </html>
