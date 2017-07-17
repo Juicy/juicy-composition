@@ -1,3 +1,5 @@
+:warning: This element is **DEPRECATED**, we are developing new element that will replace it
+
 # &lt;juicy-composition&gt; [![Build Status](https://travis-ci.org/Juicy/juicy-composition.svg?branch=master)](https://travis-ci.org/Juicy/juicy-composition)
 
 > Custom Element that adds given Document Fragment to Shadow DOM
